@@ -1,11 +1,9 @@
 const fs = require('fs'),
 xml2js = require('xml2js');
 const { log: C}  = require('console');
-const { type } = require('os');
 
 // start_1
 // --xml_words_as_elements
-
 
 const parser = new xml2js.Parser();
 fs.readFile('./MiamiGP_8_as_words.xml', function(err, data) {

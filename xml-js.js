@@ -18,9 +18,3 @@ for(const [key, value] of Object.entries(elemsArr)){
         }
     }
 }
-// C(Object.groupBy(descriptors, ({ elements }) => elements))
-// C(result)
-
-
-// const obj = Object.fromEntries(result)
-// C(obj)

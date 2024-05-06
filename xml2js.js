@@ -1,25 +1,29 @@
 const fs = require('fs'),
 xml2js = require('xml2js');
 const { log: C}  = require('console');
-// start_1
+// start_3
 //documentation https://www.npmjs.com/package/xml2js
 
-//normal xml
-const scrapeObjArr = []
+const myMap = new Map()
+let outerObj = {}
 const parser = new xml2js.Parser();
-fs.readFile('./MiamiGP_8.xml', function(err, data) {
+fs.readFile('./MiamiGP_7.xml', function(err, data) {
     parser.parseString(data, function (err, result) {
         for(const [key, value] of Object.entries(result)){
-            const vFlow = value.Flow
-            vFlow.forEach(item => {
-                for(const text of item.Para){
-                    const scrapedObject = {
-                        keyId: item.$,
-                        textValue: text.Line
+            for(const flowItem of value.Flow){
+                for(const line of flowItem.Para){
+                    const innerObj = {
+                        lineId: line.$.id,
+                        desc: line.Line.toString()
                     }
-                    scrapeObjArr.push(scrapedObject.textValue)
+                    outerObj = {
+                        column: flowItem.$.id,
+                        value: innerObj 
+                    }
+                    C(outerObj)
+                    myMap.set(outerObj)        
                 }
-            })            
+            }
         }
     });
 });
