@@ -2,11 +2,9 @@
   "name": "f1-fan-app-api-xml",
   "version": "1.0.0",
   "description": "Creation of F1 technical updates API based on avaialable public data",
-  "main": "main.js",
+  "main": "xml2js.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start_1": "nodemon xml2js_words_as_elements.js",
-    "start_2": "nodemon xml-js.js",
     "start_3": "nodemon xml2js"
   },
   "author": "",
