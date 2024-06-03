@@ -19,21 +19,29 @@ const testingData = require('./mock-data')
  *  with key = "compornents" || "reasonForUpdate"
  *  it will serve to asign values to proper API keys
  */
-function checkRegex(input){
-    let componentExist = false
-    let primaryReason = false
-    const obj = 
-        {
-            components : 'Front Wing,Nose,Sidepod Inlet,Floor Edge,Cooling Louvres,Coke\/Engine Cover,Front Wing Endplate,Floor Body,Beam Wing,Rear Wing,Rear Corner,Rear Suspension,Front Suspension,Floor Fences,Diffuser,Front Corner,Floor Corner,Halo,Headrest,Mirror/im',
-            primaryReason : '/^Performance-Flow Conditioning$/im, /^Performance-Local Load$/im, /^Circuit Specific-Balance Range$/im, /^Driver Cooling$/i, /^Performance-Local Load$/im'
-        }
 
-    const isMatchComponents = obj.components.match(input) 
-    const isMatchReason = obj.primaryReason.match(input)
-    isMatchComponents ? C(componentExist = true) : C(componentExist = false)
-    isMatchReason ? C(primaryReason = true) : C(primaryReason = false)
-
-    return {components: isMatchComponents} || {primaryReason: isMatchReason}
+const checkRegex = (stringData) => {
+    // api structure blueprint
+    const testObj = {
+          Year: Number,
+          RaceNo: Number,
+          RaceName: String,
+          Constructor: String,
+          ComponentNo: Number,
+          UpdatedComponent: String,
+          PrimaryReason: String,
+          GeometricDifferences: String,
+          Description: String,
+    }
+    
+    const regexPattern = /(?<key>Year|RaceNo|RaceName|Constructor|ComponentNo|UpdatedComponent|PrimaryReason|GeometricDifferences|Description)[^a-zA-Z]+(?<value>[^,]+)/g;
+    
+    let match;
+    while ((match = regexPattern.exec(stringData)) !== null) {
+      const { key, value } = match.groups;
+      testObj[key] = value.trim();
+    }
+    return testObj;
 }
 
 
@@ -76,7 +84,24 @@ try {
                 obj[k1] = parseInt(line) : 
                 obj[k2] = {}; 
                 obj[k2][k3] = element.Line
-                
+                C("obj.desc ",obj.description.output.toString())
+
+                /**
+                 * tester for regex
+                 */
+                const testerForRegex = obj.description.output.toString()
+                for(let i = 0; i < testerForRegex; i++){
+                    if(testerForRegex[i] === Number){
+                        const newobj = {id: [i], desc : {
+                            details: testerForRegex[i] !== Number
+                        }} 
+                        C(newobj)
+
+                    }
+                }
+                const foundata = checkRegex('Front Corner')
+                C('found data ',foundata)
+              
             });
         });
     })
@@ -117,17 +142,6 @@ function removeDuplicates(arr) {
         
     return unique.toString();
 }
-
-
-// OPTIONAL
-// var finalObj = {}
-// const outputVal = obj.description.output
-// const descriptionVal = obj.description
-// const idVal = obj.id
-// finalObj[k1] = idVal;
-// finalObj[k2] = {}
-// finalObj[k2][k3] = outputVal
-
 
 
 
