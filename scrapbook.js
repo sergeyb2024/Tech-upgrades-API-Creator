@@ -13,7 +13,6 @@ const testingData = require('./mock-data');
  */
 
 
-
 const testObj = {
     Year: 2024,
     RaceNo: "",
@@ -50,7 +49,6 @@ function getPrimaryReason (string) {
     }
 }
 
-
 function inputComponents(string) {
     /**
      * This should recognise the component names and place into key value pairs
@@ -66,13 +64,11 @@ function inputComponents(string) {
 
 
 function getDescriptionsString(string) {
-
     /**
      *  function will validate number of words as well as capital letter.
      *  usually descriptions are the longest. Updated components have 2 to 3 words and Primary reason may vary,
      *  therefore each value has an "as well as"
      */
-    
     for (const sentence of string.split('.')) {
         const trimmedSentence = sentence.trim();
         const validateSentenceLength = trimmedSentence && trimmedSentence[0].toUpperCase() === trimmedSentence[0] && trimmedSentence.split(' ').length
@@ -92,12 +88,24 @@ function getDescriptionsString(string) {
             }
         } else if(validateSentenceLength <= 2 && uppercaseCount <= 2){
            return testObj.UpdatedComponent = trimmedSentence
-        }
-        
+        } 
     }
-
 }
 
+function getNameOfUpdatedComponent(text) {
+    // \d\n\n\w+\s\n = is the part name all by itself?
+    // \d\n\n\w+\s\n\w+ = then grab next word to combine together
+
+    const pattern = /\d\n\n\w+\s\n\w+/gm
+    const m = text.match(pattern)
+    C(m)
+}
+function getUpdateKey (text) {
+    const pattern = /\d/gm
+    const m = text.match(pattern)
+    // C(m)
+
+}
 
 var paragraphs; var line;
 const parser = new xml2js.Parser();
@@ -128,7 +136,6 @@ try {
                 const firstTrim = newArr.slice(-1).toString().split('\n').join(';').trim().replace(/,\s/, ' ')
                 const secondTrim = firstTrim.split('-,;').join('As Well As ')
                 const thirdTrim = secondTrim.split(/(?<=\w),;(?=[a-z]\w)/g).join(' ').replace('Front,;Suspension', 'Front Suspension')
-                // const fourthTrim = thirdTrim.split(/-?\W\;(?=[A-Z]\w|\s\[a-z]\w)/g).join('. ').replace(/(?=\;\d)/g, '--')
                 const fourthTrim = thirdTrim.split(/-?\W\;(?=[A-Z]\w|\s\[a-z]\w)/g).join('. ').replace('Coke/Engine. Cover', 'Coke/Engine Cover').replace('Cooling. Louvres', 'Cooling Louvres')
 
                 /**
@@ -137,7 +144,9 @@ try {
                  */
                 testObj.PrimaryReason = getPrimaryReason(fourthTrim)
                 testObj.Description = getDescriptionsString(fourthTrim)
-
+                let testArray = []
+                const regexPatternForParts = /(?<=[A-Z])\w+,(?=\n[A-Z]\w+\n)/gm
+                
             });
         });
     })
