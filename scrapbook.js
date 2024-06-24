@@ -1,7 +1,7 @@
 const fs = require('fs')
 const xml2js = require('xml2js');
 const { log: C } = require('console');
-const testingData = require('./mock-data');
+
 
 
 /**
@@ -11,6 +11,7 @@ const testingData = require('./mock-data');
  *  output box will contain text height in indentation in px
  *  no use for words as elements
  */
+
 
 
 const testObj = {
